@@ -3,8 +3,33 @@
 <html>
 <head>
   <title>BTCUSDT 차트</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #1e1e1e;
+      color: white;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+    .nav {
+      margin-top: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
 </head>
-<body style="margin: 0; background-color: #1e1e1e;">
+<body>
+  <div class="nav">
+    <a href="index.html"><button>🎮 블랙잭으로</button></a>
+  </div>
   <div class="tradingview-widget-container">
     <div id="tradingview_btcusdt"></div>
     <script src="https://s3.tradingview.com/tv.js"></script>
