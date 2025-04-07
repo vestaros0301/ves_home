@@ -2,14 +2,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>블랙잭 게임 - 승/패 기록</title>
+  <title>블랙잭 게임</title>
   <style>
     body {
       font-family: 'Arial', sans-serif;
       background-color: #1e1e1e;
       color: white;
       text-align: center;
-      padding-top:  40px;
+      padding-top: 40px;
     }
     button {
       padding: 10px 20px;
@@ -37,7 +37,7 @@
   <input type="number" id="betInput" placeholder="배팅 금액 입력" />
   <br/>
   <button onclick="startGame()">게임 시작</button>
-  <button onclick="resetStats()">승/패 초기화</button>
+  <a href="chart.html" target="_blank"><button>📊 BTC 차트 보기</button></a>
 
   <div id="game"></div>
   <div id="stats" style="margin-top: 30px;">
@@ -125,7 +125,7 @@
       updateStats(winStatus);
     }
 
-    loadStats(); // 초기 로딩 시 승/패 표시
+    loadStats();
   </script>
 </body>
 </html>
