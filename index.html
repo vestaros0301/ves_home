@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>블랙잭 게임</title>
+  <title>블랙잭 게임 - 배팅 시스템</title>
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -21,6 +21,11 @@
       color: white;
       cursor: pointer;
     }
+    input[type="number"] {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
     #game {
       margin-top: 30px;
     }
@@ -28,10 +33,15 @@
 </head>
 <body>
   <h1>🃏 블랙잭 게임</h1>
+  <p>💰 현재 칩: <span id="chips">1000</span></p>
+  <input type="number" id="betInput" placeholder="배팅 금액 입력" />
+  <br/>
   <button onclick="startGame()">게임 시작</button>
   <div id="game"></div>
 
   <script>
+    let chips = 1000;
+
     function getCard() {
       const cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11];
       return cards[Math.floor(Math.random() * cards.length)];
@@ -48,19 +58,33 @@
     }
 
     function startGame() {
+      const bet = parseInt(document.getElementById("betInput").value);
+      if (isNaN(bet) || bet <= 0 || bet > chips) {
+        alert("올바른 배팅 금액을 입력하세요.");
+        return;
+      }
+
+      chips -= bet;
+
       const player = [getCard(), getCard()];
       const dealer = [getCard(), getCard()];
-
       const playerScore = calcScore(player);
       const dealerScore = calcScore(dealer);
 
       let result = '';
-      if (playerScore > 21) result = '💥 버스트! 당신이 졌습니다.';
-      else if (dealerScore > 21) result = '🎉 딜러 버스트! 당신 승리!';
-      else if (playerScore > dealerScore) result = '🎉 당신 승리!';
-      else if (playerScore < dealerScore) result = '😢 당신 패배!';
-      else result = '🤝 무승부입니다.';
+      if (playerScore > 21) {
+        result = '💥 버스트! 당신이 졌습니다.';
+      } else if (dealerScore > 21 || playerScore > dealerScore) {
+        result = '🎉 당신 승리! + ' + (bet * 2) + ' 칩';
+        chips += bet * 2;
+      } else if (playerScore < dealerScore) {
+        result = '😢 당신 패배!';
+      } else {
+        result = '🤝 무승부! 배팅 금액 반환';
+        chips += bet;
+      }
 
+      document.getElementById("chips").textContent = chips;
       document.getElementById("game").innerHTML = `
         <p>당신의 카드: ${player.join(', ')} (점수: ${playerScore})</p>
         <p>딜러의 카드: ${dealer.join(', ')} (점수: ${dealerScore})</p>
