@@ -2,21 +2,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>블랙잭 게임</title>
+  <title>은미의 카드 게임</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background-color: #1e1e1e;
+      font-family: Arial, sans-serif;
+      background-color: #121212;
       color: white;
       text-align: center;
-      padding-top: 40px;
+      padding-top: 100px;
+    }
+    h1 {
+      font-size: 40px;
+      margin-bottom: 40px;
     }
     button {
-      padding: 10px 20px;
-      font-size: 18px;
-      margin: 10px;
+      font-size: 24px;
+      padding: 15px 30px;
+      margin: 20px;
       border: none;
-      border-radius: 5px;
+      border-radius: 10px;
       background-color: #28a745;
       color: white;
       cursor: pointer;
@@ -24,108 +28,11 @@
     a {
       text-decoration: none;
     }
-    input[type="number"] {
-      padding: 10px;
-      font-size: 16px;
-      margin-top: 10px;
-    }
-    #game {
-      margin-top: 30px;
-    }
   </style>
 </head>
 <body>
-  <div>
-    <a href="chart.html"><button>📊 차트 보기</button></a>
-  </div>
-
-  <h1>🃏 블랙잭 게임</h1>
-  <p>💰 현재 칩: <span id="chips">1000</span></p>
-  <input type="number" id="betInput" placeholder="배팅 금액 입력" />
-  <br/>
-  <button onclick="startGame()">게임 시작</button>
-
-  <div id="game"></div>
-  <div id="stats" style="margin-top: 30px;">
-    <p>✅ 승리: <span id="wins">0</span> / ❌ 패배: <span id="losses">0</span></p>
-  </div>
-
-  <script>
-    let chips = 1000;
-
-    function getCard() {
-      const cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11];
-      return cards[Math.floor(Math.random() * cards.length)];
-    }
-
-    function calcScore(hand) {
-      let sum = hand.reduce((a, b) => a + b, 0);
-      let aces = hand.filter(card => card === 11).length;
-      while (sum > 21 && aces > 0) {
-        sum -= 10;
-        aces--;
-      }
-      return sum;
-    }
-
-    function updateStats(win) {
-      let wins = parseInt(localStorage.getItem("wins") || "0");
-      let losses = parseInt(localStorage.getItem("losses") || "0");
-      if (win === true) wins++;
-      else if (win === false) losses++;
-      localStorage.setItem("wins", wins);
-      localStorage.setItem("losses", losses);
-      document.getElementById("wins").textContent = wins;
-      document.getElementById("losses").textContent = losses;
-    }
-
-    function loadStats() {
-      document.getElementById("wins").textContent = localStorage.getItem("wins") || "0";
-      document.getElementById("losses").textContent = localStorage.getItem("losses") || "0";
-    }
-
-    function startGame() {
-      const bet = parseInt(document.getElementById("betInput").value);
-      if (isNaN(bet) || bet <= 0 || bet > chips) {
-        alert("올바른 배팅 금액을 입력하세요.");
-        return;
-      }
-
-      chips -= bet;
-      const player = [getCard(), getCard()];
-      const dealer = [getCard(), getCard()];
-      const playerScore = calcScore(player);
-      const dealerScore = calcScore(dealer);
-
-      let result = '';
-      let winStatus = null;
-
-      if (playerScore > 21) {
-        result = '💥 버스트! 당신이 졌습니다.';
-        winStatus = false;
-      } else if (dealerScore > 21 || playerScore > dealerScore) {
-        result = '🎉 당신 승리! + ' + (bet * 2) + ' 칩';
-        chips += bet * 2;
-        winStatus = true;
-      } else if (playerScore < dealerScore) {
-        result = '😢 당신 패배!';
-        winStatus = false;
-      } else {
-        result = '🤝 무승부! 배팅 금액 반환';
-        chips += bet;
-      }
-
-      document.getElementById("chips").textContent = chips;
-      document.getElementById("game").innerHTML = `
-        <p>당신의 카드: ${player.join(', ')} (점수: ${playerScore})</p>
-        <p>딜러의 카드: ${dealer.join(', ')} (점수: ${dealerScore})</p>
-        <h2>${result}</h2>
-      `;
-
-      updateStats(winStatus);
-    }
-
-    loadStats();
-  </script>
+  <h1>🎰 은미의 카드 게임</h1>
+  <a href="blackjack.html"><button>🃏 블랙잭 게임</button></a>
+  <a href="guess.html"><button>🎯 문양 맞추기 게임</button></a>
 </body>
 </html>
