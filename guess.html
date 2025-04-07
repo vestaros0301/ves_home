@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,10 +33,17 @@
       margin-top: 50px;
       color: #28a745;
     }
+    input[type="number"] {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
   <h1>🎯 문양 맞추기 게임</h1>
+  <p>💰 현재 칩: <span id="chips">1000</span></p>
+  <input type="number" id="betInput" placeholder="배팅 금액 입력" />
   <p>어떤 문양일까요? 클릭해서 맞춰보세요!</p>
   <div>
     <button onclick="check('♠')">♠</button>
@@ -47,10 +53,11 @@
   </div>
   <div id="result"></div>
   <div id="score">✅ 정답: <span id="wins">0</span> / ❌ 오답: <span id="fails">0</span></div>
-  <a href="index.html">🏠 메인으로 돌아가기</a>
+  <a href="index.html" onclick="resetStats()">🏠 메인으로 돌아가기</a>
 
   <script>
     const suits = ['♠', '♥', '♦', '♣'];
+    let chips = 1000;
     let wins = 0;
     let fails = 0;
 
@@ -58,11 +65,29 @@
       return suits[Math.floor(Math.random() * suits.length)];
     }
 
+    function resetStats() {
+      chips = 1000;
+      wins = 0;
+      fails = 0;
+      document.getElementById("chips").textContent = chips;
+      document.getElementById("wins").textContent = wins;
+      document.getElementById("fails").textContent = fails;
+    }
+
     function check(userGuess) {
+      const bet = parseInt(document.getElementById("betInput").value);
+      if (isNaN(bet) || bet <= 0 || bet > chips) {
+        alert("올바른 배팅 금액을 입력하세요.");
+        return;
+      }
+
       const answer = getRandomSuit();
       const resultEl = document.getElementById("result");
+      chips -= bet;
+
       if (userGuess === answer) {
         wins++;
+        chips += bet * 2;
         resultEl.textContent = `🎉 정답입니다! (${answer})`;
         resultEl.style.color = "#28a745";
       } else {
@@ -70,6 +95,8 @@
         resultEl.textContent = `❌ 오답입니다! 정답은 ${answer}`;
         resultEl.style.color = "#ff5050";
       }
+
+      document.getElementById("chips").textContent = chips;
       document.getElementById("wins").textContent = wins;
       document.getElementById("fails").textContent = fails;
     }
